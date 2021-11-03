@@ -48,6 +48,7 @@ function start() {
       for (let i = 0; i < bees.length; i++) {
         console.log(bees[i].id);
         bees[i].remove();
+        console.log("got to here");
         //console.log(bees[i].parentElement.nodeName);
         //bees[i].parentNode.removeChild(bees[i]);
         //console.log(i);
