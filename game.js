@@ -40,6 +40,29 @@ function Bear() {
 }
 
 function start() {
+  //clear page bees, stings, duration
+  try {
+    bees;
+    if (bees.length > 0) {
+      //console.log(bees.length);
+      for (let i = 0; i < bees.length; i++) {
+        console.log(bees[i].id);
+        bees[i].remove();
+        //console.log(bees[i].parentElement.nodeName);
+        //bees[i].parentNode.removeChild(bees[i]);
+        //console.log(i);
+        //let beeId = "bee" + i + 1;
+        //let zapper = document.getElementById(beeId);
+        //console.log(zapper.id);
+        //zapper.parentNode.removeChild(zapper);
+      }
+    }
+    console.log("true");
+  } catch (e) {
+    console.log("false");
+  }
+  hits.innerHTML = 0;
+  document.getElementById("duration").innerHTML = 0;
   //create bear
   bear = new Bear();
   //add an event listener to the keypress event
@@ -57,6 +80,10 @@ function start() {
 //Handle keyboard events
 //to move the bear
 function moveBear(e) {
+  //initialise timer
+  if (typeof lastStingTime === "undefined") {
+    lastStingTime = Date();
+  }
   //codes of the four keys
   const KEYUP = 38;
   const KEYDOWN = 40;
@@ -185,15 +212,15 @@ function moveBees() {
 function updateBees() {
   //update loop for game
   //move the bees randomly
-  moveBees();
   //use update period from form
   let period = Number(document.getElementById("periodTimer").value); //modify to control refesh period
   //check for 1000 stings
-  if (hits.innerHTML >= 100) {
+  if (hits.innerHTML >= 1000) {
     alert("Game Over!");
     clearTimeout(updateTimer);
   } else {
     //update the timer for the next move
+    moveBees();
     updateTimer = setTimeout("updateBees()", period);
   }
 }
@@ -206,10 +233,15 @@ function isHit(defender, offender) {
     hits.innerHTML = score; //display the new score
     //calculate longest duration
     let newStingTime = new Date();
-    let thisDuration = newStingTime - lastStingTime;
+    //not sure why this is necessary
+    let thisDuration =
+      (Date.parse(newStingTime) - Date.parse(lastStingTime)) / 1000;
+    //let thisDuration = newStingTime - lastStingTime;
     lastStingTime = newStingTime;
     let longestDuration = Number(duration.innerHTML);
+    //something stops bugs moving if longestDuration isNan?
     if (longestDuration === 0) {
+      //this condition seems covered by the else?
       longestDuration = thisDuration;
     } else {
       if (longestDuration < thisDuration) longestDuration = thisDuration;
@@ -221,19 +253,29 @@ function isHit(defender, offender) {
 function overlap(element1, element2) {
   //consider the two rectangles wrapping the two elements
   //rectangle of the first element
-  left1 = element1.htmlElement.offsetLeft;
-  top1 = element1.htmlElement.offsetTop;
-  right1 = element1.htmlElement.offsetLeft + element1.htmlElement.offsetWidth;
-  bottom1 = element1.htmlElement.offsetTop + element1.htmlElement.offsetHeight;
+  let left1 = element1.htmlElement.offsetLeft;
+  let top1 = element1.htmlElement.offsetTop;
+  let right1 =
+    element1.htmlElement.offsetLeft + element1.htmlElement.offsetWidth;
+  let bottom1 =
+    element1.htmlElement.offsetTop + element1.htmlElement.offsetHeight;
   //rectangle of the second element
-  left2 = element2.htmlElement.offsetLeft; //e2x
-  top2 = element2.htmlElement.offsetTop; //e2y
-  right2 = element2.htmlElement.offsetLeft + element2.htmlElement.offsetWidth;
-  bottom2 = element2.htmlElement.offsetTop + element2.htmlElement.offsetHeight;
+  let left2 = element2.htmlElement.offsetLeft; //e2x
+  let top2 = element2.htmlElement.offsetTop; //e2y
+  let right2 =
+    element2.htmlElement.offsetLeft + element2.htmlElement.offsetWidth;
+  let bottom2 =
+    element2.htmlElement.offsetTop + element2.htmlElement.offsetHeight;
   //calculate the intersection of the two rectangles
-  x_intersect = Math.max(0, Math.min(right1, right2) - Math.max(left1, left2));
-  y_intersect = Math.max(0, Math.min(bottom1, bottom2) - Math.max(top1, top2));
-  intersectArea = x_intersect * y_intersect;
+  let x_intersect = Math.max(
+    0,
+    Math.min(right1, right2) - Math.max(left1, left2)
+  );
+  let y_intersect = Math.max(
+    0,
+    Math.min(bottom1, bottom2) - Math.max(top1, top2)
+  );
+  let intersectArea = x_intersect * y_intersect;
   //if intersection is nil no hit
   if (intersectArea == 0 || isNaN(intersectArea)) {
     return false;

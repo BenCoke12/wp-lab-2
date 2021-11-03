@@ -9,9 +9,8 @@
       var bear;
       var bees;
       var updateTimer;
-      //take start time
       //var?
-      lastStingTime = new Date();
+      var lastStingTime;
     </script>
     <script src="game.js"></script>
     <noscript>
@@ -28,7 +27,7 @@
       </p>
       <p>
         You can adjust bees' speed
-        <input type="text" id="speedBees" value="50" size="3" /> px/ms
+        <input type="text" id="speedBees" value="10" size="3" /> px/ms
         <br />
         and the refresh period
         <input type="text" id="periodTimer" value="10" size="3" /> ms
@@ -37,6 +36,7 @@
         <input type="text" id="speedBear" value="10" size="3" /> px/ms
       </p>
       <h2>Press left, right, up, down keys to move the bear</h2>
+      <button type="button" onclick="start();">Restart</button>
     </div>
     <div id="scores">
       <table>
@@ -45,7 +45,7 @@
             <p>Stings: [<span id="hits">0</span>]</p>
           </td>
           <td>
-            <p>Best duration: [<span id="duration">?</span>]</p>
+            <p>Best duration: [<span id="duration">0</span>] seconds</p>
           </td>
         </tr>
       </table>
