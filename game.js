@@ -18,6 +18,8 @@ function Bear() {
     this.htmlElement.style.top = this.y + "px";
     this.htmlElement.style.display = "block";
     this.htmlElement.style.position = "absolute"; //or "fixed" to fix to the window
+    //this.oX = new String(this.htmlElement.style.left);
+    //this.oY = new String(this.htmlElement.style.top);
   };
 
   this.fitBounds = function () {
@@ -37,45 +39,6 @@ function Bear() {
   this.setSpeed = function () {
     this.dBear = Number(document.getElementById("speedBear").value);
   };
-}
-
-function start() {
-  //clear page bees, stings, duration
-  try {
-    bees;
-    if (bees.length > 0) {
-      //console.log(bees.length);
-      for (let i = 0; i < bees.length; i++) {
-        console.log(bees[i].id);
-        bees[i].remove();
-        console.log("got to here");
-        //console.log(bees[i].parentElement.nodeName);
-        //bees[i].parentNode.removeChild(bees[i]);
-        //console.log(i);
-        //let beeId = "bee" + i + 1;
-        //let zapper = document.getElementById(beeId);
-        //console.log(zapper.id);
-        //zapper.parentNode.removeChild(zapper);
-      }
-    }
-    console.log("true");
-  } catch (e) {
-    console.log("false");
-  }
-  hits.innerHTML = 0;
-  document.getElementById("duration").innerHTML = 0;
-  //create bear
-  bear = new Bear();
-  //add an event listener to the keypress event
-  document.addEventListener("keydown", moveBear, false);
-  //not needed when setSpeed is called inside this.move
-  //document.addEventListener("change", bear.setSpeed, false);
-  //create new array for bees
-  bees = new Array();
-  //create bees
-  makeBees();
-  //initial call for updateBees
-  updateBees();
 }
 
 //Handle keyboard events
@@ -179,6 +142,8 @@ function getRandomInt(max) {
 }
 
 function makeBees() {
+  //clear bees if there are bees in the array
+  clearBees();
   //get number of bees specified by the use
   let nbBees = document.getElementById("nbBees").value;
   nbBees = Number(nbBees); //try converting the content of the input to a number
@@ -217,7 +182,7 @@ function updateBees() {
   let period = Number(document.getElementById("periodTimer").value); //modify to control refesh period
   //check for 1000 stings
   if (hits.innerHTML >= 1000) {
-    alert("Game Over!");
+    window.alert("Game Over!");
     clearTimeout(updateTimer);
   } else {
     //update the timer for the next move
@@ -284,4 +249,47 @@ function overlap(element1, element2) {
   return true;
 }
 
-//should check form for quantity of bees?
+function addBee() {
+  let num = bees.length + 1;
+  var bee = new Bee(num); //create object and its IMG element
+  bee.display(); //display the bee
+  bees.push(bee); //add the bee object to the bees array
+}
+
+function start() {
+  //create bear
+  bear = new Bear();
+  oX = bear.x;
+  oY = bear.y;
+  //add an event listener to the keypress event
+  document.addEventListener("keydown", moveBear, false);
+  //eventlistener for changing number of bees
+  document.getElementById("nbBees").addEventListener("change", makeBees);
+  //create new array for bees
+  bees = new Array();
+  //create bees
+  makeBees();
+  //initial call for updateBees
+  updateBees();
+}
+
+function restart() {
+  //clear page bees, stings, duration
+  hits.innerHTML = "0";
+  document.getElementById("duration").innerHTML = "0";
+  bear.x = oX;
+  bear.y = oY;
+  bear.display();
+  clearBees();
+  start();
+}
+
+function clearBees() {
+  //clear bees from screen
+  let zapper = document.getElementsByClassName("bee");
+  while (zapper.length > 0) {
+    zapper[0].parentNode.removeChild(zapper[0]);
+    zapper = document.getElementsByClassName("bee");
+  }
+  bees = new Array();
+}

@@ -8,17 +8,18 @@
 
 #board {
   position: absolute;
-  height: 600px;
-  width: 1200px;
-  background-color: rgb(6, 136, 119);
+  height: 29vw;
+  width: 99vw;
+  background-color: rgb(98, 199, 103);
   align-content: center;
   align-self: center;
 }
 
 #title {
-  background-color: rgb(128, 128, 128);
+  background-color: rgb(226, 104, 104);
   align-content: center;
   align-self: center;
+  border-style: double;
 }
 
 #scores {
@@ -37,4 +38,14 @@
 
 #duration {
   color: blue;
+}
+
+h1 {
+  font-family: Verdana;
+  text-decoration: underline;
+}
+
+p {
+  font-family: Georgia;
+  font-size: 18px;
 }

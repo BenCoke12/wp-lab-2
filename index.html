@@ -11,6 +11,8 @@
       var updateTimer;
       //var?
       var lastStingTime;
+      var oX;
+      var oY;
     </script>
     <script src="game.js"></script>
     <noscript>
@@ -36,7 +38,8 @@
         <input type="text" id="speedBear" value="10" size="3" /> px/ms
       </p>
       <h2>Press left, right, up, down keys to move the bear</h2>
-      <button type="button" onclick="start();">Restart</button>
+      <button type="button" onclick="restart();">Restart</button>
+      <button type="button" onclick="addBee();">Add bee</button>
     </div>
     <div id="scores">
       <table>
